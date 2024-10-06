@@ -1,0 +1,30 @@
+services:
+  mysqldb:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldb_data:/var/lib/mysql  # Persistencia de datos
+    networks:
+        - my-network
+    expose:
+      - "3306"
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysqldb
+    links:
+      - mysqldb
+    volumes:
+      - .:/usr/src/app  # Montar el directorio actual en el contenedor
+
+volumes:
+  mysqldb_data:  # Definición del volumen
+networks:
+    my-network: # Definición de la red
