@@ -4,7 +4,9 @@
  **/
 import express from 'express';
 import { createPool } from 'mysql2/promise';
-import cors from 'cors'; // Importar CORS
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 /**
  * @brief Crear la aplicación de Express
@@ -40,28 +42,33 @@ app.use(express.static('public'));
 
 /**
  * @brief Se redirige la ruta principal a "/index.html"
- * @details Se redirige la ruta principal a "/index.html" para que al ingresar a la dirección raíz de la
- * aplicación se cargue el archivo "index.html" de la carpeta "public".
+ * @details Se redirige la ruta principal a "/index.html" para que al ingresar a la dirección raíz de la aplicación se cargue el archivo "index.html" de la carpeta "public".
  **/
-app.get('/', (req, res) => {
-    res.redirect('/index.html');
-});
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Servir archivos estáticos desde la carpeta "public"
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Redirigir a index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 /**
- * @function GET /mediciones
+ * @function GET /ping
  * @brief Ruta para verificar la conexión a la base de datos (ping)
- * @details Se crea una ruta "/ping" que devuelve la fecha y hora actuales de la base de datos para verificar
- * que la conexión está funcionando correctamente.
+ * @details Se crea una ruta "/ping" que devuelve la fecha y hora actuales de la base de datos para verificar que la conexión está funcionando correctamente.
  * @returns La fecha y hora actuales de la base de datos.
  * @throws Error 500 si hay un error al hacer ping a la base de datos.
  *
- * @example GET /ping
+ * @example GET/ping
  * {
  *  "0": {
  *    "NOW()": "2021-10-20T00:00:00.000Z"
  *    }
  * }
- * **/
+ */
 app.get('/ping', async (req, res) => {
     try {
         const [result] = await pool.query('SELECT NOW()');
@@ -73,13 +80,14 @@ app.get('/ping', async (req, res) => {
 });
 
 /**
+ * @function GET /ultima-medicion
  * @brief Ruta para obtener la última medición
  * @details Se crea una ruta "/ultima-medicion" que devuelve la última medición registrada en la base de datos.
  * @returns La última medición registrada en la base de datos.
  * @throws Error 404 si no se encontraron mediciones.
  * @throws Error 500 si hay un error en la base de datos.
  *
- * @example GET /ultima-medicion
+ * @example GET/ultima-medicion
  * {
  *   "fecha": "2021-10-20T00:00:00.000Z",
  *   "Lugar": "Laboratorio",
@@ -101,6 +109,7 @@ app.get('/ultima-medicion', async (req, res) => {
     }
 });
 /**
+ * @function POST /insertar
  * @brief Ruta para insertar una medición
  * @details Se crea una ruta "/insertar" que permite insertar una nueva medición en la base de datos.
  * @param Lugar - El lugar de la medición.
@@ -110,7 +119,7 @@ app.get('/ultima-medicion', async (req, res) => {
  * @throws Error 400 si faltan datos obligatorios.
  * @throws Error 500 si hay un error en el servidor.
  *
- * @example POST /insertar
+ * @example POST/insertar
  * {
  *    "Fecha": "2021-10-20T00:00:00.000Z",
  *    "Lugar": "Laboratorio",
