@@ -1,8 +1,19 @@
-// api/controllers/measurementController.js
+/**
+ *  @file PeticionesCTR.js
+ *  @brief Controladores para gestionar las peticiones a la base de datos.
+ *  @details Este archivo contiene los controladores para gestionar las peticiones a la base de datos.
+ * */
 import pool from '../Config/database.js';
 import { obtenerUltimaMedicion, insertarMedicion } from '../../Logica/medicionesService.js';
 
-
+/**
+ * @brief Realiza un ping a la base de datos.
+ *
+ * Esta función realiza una consulta a la base de datos para comprobar si está operativa.
+ *
+ * @param {Object} req La solicitud HTTP.
+ * @param {Object} res La respuesta HTTP.
+ */
 export const pingDB = async (req, res) => {
     try {
         const [result] = await pool.query('SELECT NOW()');
@@ -13,6 +24,14 @@ export const pingDB = async (req, res) => {
     }
 };
 
+/**
+ * @brief Obtiene la última medición registrada en la base de datos.
+ *
+ * Esta función obtiene la última medición registrada en la base de datos.
+ *
+ * @param {Object} req La solicitud HTTP.
+ * @param {Object} res La respuesta HTTP.
+ */
 
 export const getUltimaPeticion = async (req, res) => {
     try {
@@ -24,6 +43,12 @@ export const getUltimaPeticion = async (req, res) => {
     }
 };
 
+/**
+ * @brief Inserta una nueva medición en la base de datos.
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 
 export const setMedicion = async (req, res) => {
     try {

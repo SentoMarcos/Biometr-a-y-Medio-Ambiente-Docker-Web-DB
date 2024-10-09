@@ -1,4 +1,7 @@
-// index.js
+/**
+ * @file index.js
+ * @brief Archivo principal para iniciar el servidor.
+ * */
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -6,7 +9,7 @@ import { fileURLToPath } from 'url';
 import PeticionesRutas from './api/Rutas/PeticionesRutas.js';
 
 
-// Crear la aplicación de Express
+// Crear la aplicación express
 const app = express();
 
 // Configuraciones de middleware
@@ -21,7 +24,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Rutas
 app.use('/api', PeticionesRutas); // Usar rutas bajo el prefijo /api
 
-// Ruta raíz para el frontend
+/**
+ * @brief Ruta principal
+ * */
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
