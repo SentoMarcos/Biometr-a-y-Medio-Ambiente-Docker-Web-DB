@@ -22,8 +22,8 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas
-app.use('/api', PeticionesRutas); // Usar rutas bajo el prefijo /api
-
+app.use('/', PeticionesRutas); // Usar rutas bajo el prefijo /api
+6//app.use('/api', PeticionesRutas); // Usar rutas bajo el prefijo /api
 /**
  * @brief Ruta principal
  * */

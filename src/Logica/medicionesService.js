@@ -12,7 +12,7 @@ import pool from '../api/Config/database.js';
  * `Lugar`, `Gas`, `Valor` y `fecha`.
  */
 export const obtenerUltimaMedicion = async () => {
-  const [result] = await pool.query('SELECT * FROM medidas ORDER BY fecha DESC LIMIT 1');
+  const [result] = await pool.query('SELECT * FROM medidas ORDER BY idmedidas DESC LIMIT 1');
   if (result.length === 0) {
     throw new Error('No se encontraron mediciones');
   } else if (result.length > 1) {

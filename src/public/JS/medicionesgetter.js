@@ -14,7 +14,7 @@
 const getUltimaMedicion = async () => {
     try {
         // Asegúrate de que la ruta aquí coincida con el backend (usando el prefijo '/api' si corresponde)
-        const response = await fetch('/api/ultima-medicion');
+        const response = await fetch('/ultima-medicion');
         if (!response.ok) {
             throw new Error('Error al obtener la última medición');
         }
